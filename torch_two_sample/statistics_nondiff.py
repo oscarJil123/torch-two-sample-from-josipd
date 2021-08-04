@@ -4,7 +4,7 @@ from scipy.sparse.csgraph import minimum_spanning_tree as mst
 from torch.autograd import Function
 import numpy as np
 import torch
-from .permutation_test import permutation_test_mat
+# from .permutation_test import permutation_test_mat
 from .util import pdist
 
 __all__ = ['FRStatistic', 'KNNStatistic']
@@ -120,23 +120,7 @@ class FRStatistic(object):
         else:
             return statistic
 
-    def pval(self, mst, n_permutations=1000):
-        r"""Compute a p-value using a permutation test.
-
-        Arguments
-        ---------
-        matrix: :class:`torch:torch.autograd.Variable`
-            The matrix computed using :py:meth:`~.FRStatistic.__call__`.
-        n_permutations: int
-            The number of random draws from the permutation null.
-
-        Returns
-        -------
-        float
-            The estimated p-value."""
-        return permutation_test_mat(mst.data.numpy(),
-                                    self.n_1, self.n_2, n_permutations)
-
+    
 
 class KNNStatistic(object):
     """The classical k-NN test :cite:`friedman1983graph`.
@@ -199,19 +183,4 @@ class KNNStatistic(object):
         else:
             return statistic
 
-    def pval(self, margs, n_permutations=1000):
-        r"""Compute a p-value using a permutation test.
-
-        Arguments
-        ---------
-        matrix: :class:`torch:torch.autograd.Variable`
-            The matrix computed using :py:meth:`~.KNNStatistic.__call__`.
-        n_permutations: int
-            The number of random draws from the permutation null.
-
-        Returns
-        -------
-        float
-            The estimated p-value."""
-        return permutation_test_mat(margs.data.cpu().numpy(),
-                                    self.n_1, self.n_2, n_permutations)
+    
