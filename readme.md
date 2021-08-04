@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/josipd/torch-two-sample.svg?branch=master)](https://travis-ci.org/josipd/torch-two-sample)
 
 A PyTorch library for differentiable two-sample tests
-
+This code is from josipd: https://github.com/josipd/torch-two-sample.git
 ### Description
 
 This package implements a total of six two sample tests:
