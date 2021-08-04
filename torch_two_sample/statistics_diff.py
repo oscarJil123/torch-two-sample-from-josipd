@@ -6,7 +6,7 @@ from torch.autograd import Variable
 from torch.nn.functional import softmax
 
 from .inference_cardinality import inference_cardinality, NINF
-from .permutation_test import permutation_test_tri, permutation_test_mat
+# from .permutation_test import permutation_test_tri, permutation_test_mat
 from .inference_trees import TreeMarginals
 from .util import pdist
 
@@ -134,22 +134,7 @@ class SmoothFRStatistic(object):
         else:
             return - (t_stat - mean) / std
 
-    def pval(self, matrix, n_permutations=1000):
-        r"""Compute a p-value using a permutation test.
-
-        Arguments
-        ---------
-        matrix: :class:`torch:torch.autograd.Variable`
-            The matrix computed using :py:meth:`~.SmoothFRStatistic.__call__`.
-        n_permutations: int
-            The number of random draws from the permutation null.
-
-        Returns
-        -------
-        float
-            The estimated p-value."""
-        return permutation_test_tri(matrix.data.cpu().numpy(),
-                                    self.n_1, self.n_2, n_permutations)
+  
 
 
 class SmoothKNNStatistic(object):
@@ -291,22 +276,7 @@ class SmoothKNNStatistic(object):
         else:
             return - (t_stat - mean) / std
 
-    def pval(self, margs, n_permutations=1000):
-        r"""Compute a p-value using a permutation test.
-
-        Arguments
-        ---------
-        matrix: :class:`torch:torch.autograd.Variable`
-            The matrix computed using :py:meth:`~.SmoothKNNStatistic.__call__`.
-        n_permutations: int
-            The number of random draws from the permutation null.
-
-        Returns
-        -------
-        float
-            The estimated p-value."""
-        return permutation_test_mat(margs.data.cpu().numpy(),
-                                    self.n_1, self.n_2, n_permutations)
+   
 
 
 class MMDStatistic:
@@ -389,27 +359,7 @@ class MMDStatistic:
         else:
             return mmd
 
-    def pval(self, distances, n_permutations=1000):
-        r"""Compute a p-value using a permutation test.
-
-        Arguments
-        ---------
-        matrix: :class:`torch:torch.autograd.Variable`
-            The matrix computed using :py:meth:`~.MMDStatistic.__call__`.
-        n_permutations: int
-            The number of random draws from the permutation null.
-
-        Returns
-        -------
-        float
-            The estimated p-value."""
-        if isinstance(distances, Variable):
-            distances = distances.data
-        return permutation_test_mat(distances.cpu().numpy(),
-                                    self.n_1, self.n_2,
-                                    n_permutations,
-                                    a00=self.a00, a11=self.a11, a01=self.a01)
-
+    
 
 class EnergyStatistic:
     r"""The energy test of :cite:`szekely2013energy`.
@@ -464,21 +414,4 @@ class EnergyStatistic:
         else:
             return loss
 
-    def pval(self, distances, n_permutations=1000):
-        """Compute a p-value using a permutation test.
-
-        Arguments
-        ---------
-        matrix: :class:`torch:torch.autograd.Variable`
-            The matrix computed using :py:meth:`~.EnergyStatistic.__call__`.
-        n_permutations: int
-            The number of random draws from the permutation null.
-
-        Returns
-        -------
-        float
-            The estimated p-value."""
-        return permutation_test_mat(distances.data.cpu().numpy(),
-                                    self.n_1, self.n_2,
-                                    n_permutations,
-                                    a00=self.a00, a11=self.a11, a01=self.a01)
+    
